@@ -1,4 +1,5 @@
 import { cart } from "../data/cart.js";
+import { products } from '../data/products.js'
 
 let productsHTML = '';
 products.forEach((product) => {
@@ -48,57 +49,67 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary" data-product-id="${product.id}">
+          <button class="add-to-cart-button js-add-to-cart button-primary" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>`;
 });
 document.querySelector('.products-grid').innerHTML = productsHTML;
 
+function addToCart(productId){
+    //Tar inn Id verdien til selector knyttet til produktet du har valgt. Vet hvilken selector den skal velge på grunn av at hver selector har ulik productId.
+    const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
+    const productIndex = cart.findIndex((product) => {
+        return product.productId === productId;
+    });
+    if(productIndex !== -1){
+        cart[productIndex].quantity++;
+    } else{
+        cart.push({
+            productId,
+            quantity
+        });
+    }
+}
+
+function updateCartQuantity(){
+    let cartQuantity = 0;
+    cart.forEach((product) => {
+        cartQuantity += product.quantity;
+    });
+    document.querySelector('.js-cart-quantity')
+        .innerHTML = cartQuantity;
+}
+
 //Objekt som samler timeOutId knyttet til produktet du trykket på sin productId.
 const addedMessageTimeouts = {};
-const quantity = document.querySelectorAll('.js-product-quantity');
-document.querySelectorAll('.add-to-cart-button')
+function displayAdded(productId){
+    const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+    addedToCart.classList.add('added-to-cart-visible');
+    
+    //Variabel som blir verdien til propertien med samme key som productId
+    const previousTimeout = addedMessageTimeouts[productId];
+    //Hvis productId har en timeoutId vil den cleares.
+    if(previousTimeout){
+        clearTimeout(previousTimeout);
+    }
+    const timeOutId = setTimeout(() => {
+        addedToCart.classList.remove('added-to-cart-visible');
+    }, 2000);
+
+    //timeOutId knyttes til productId, f.eks: 'productId': 7, legges til i objekt 
+    addedMessageTimeouts[productId] = timeOutId;
+}
+
+document.querySelectorAll('.js-add-to-cart')
     .forEach((button) => {
         button.addEventListener('click', () => {
             //Tar inn Id´en som ble knyttet til knappens data-attributt da løkken kjøres.
             const productId = button.dataset.productId;
-            //Tar inn Id verdien til selector knyttet til produktet du har valgt. Vet hvilken selector den skal velge på grunn av at hver selector har ulik productId.
-            const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
-            const productIndex = cart.findIndex((product) => {
-                return product.productId === productId;
-            });
-            if(productIndex !== -1){
-                cart[productIndex].quantity++;
-            } else{
-                cart.push({
-                    productId,
-                    quantity
-                });
-            }
-            
-            let cartQuantity = 0;
-            cart.forEach((product) => {
-                cartQuantity += product.quantity;
-            });
-            document.querySelector('.js-cart-quantity')
-                .innerHTML = cartQuantity;
-            
-            const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
-            addedToCart.classList.add('added-to-cart-visible');
-            
-            //Variabel som blir verdien til propertien med samme key som productId
-            const previousTimeout = addedMessageTimeouts[productId];
-            //Hvis productId har en timeoutId vil den cleares.
-            if(previousTimeout){
-                clearTimeout(previousTimeout);
-            }
-            const timeOutId = setTimeout(() => {
-                addedToCart.classList.remove('added-to-cart-visible');
-            }, 2000);
-
-            //timeOutId knyttes til productId, f.eks: 'productId': 7, legges til i objekt 
-            addedMessageTimeouts[productId] = timeOutId;
+            addToCart(productId);
+            updateCartQuantity();
+            displayAdded(productId);
+            console.log(cart);
         });
     });
 
