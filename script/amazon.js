@@ -24,6 +24,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
+          <!--ProductId for produktet settes inn i klassenavnet for å gjennkjenne hvilken selector du velger.-->
             <select class="js-product-quantity-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
@@ -40,7 +41,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -52,12 +53,16 @@ products.forEach((product) => {
 });
 document.querySelector('.products-grid').innerHTML = productsHTML;
 
+//Objekt som samler timeOutId knyttet til produktet du trykket på sin productId.
+const addedMessageTimeouts = {};
 const quantity = document.querySelectorAll('.js-product-quantity');
 document.querySelectorAll('.add-to-cart-button')
     .forEach((button) => {
         button.addEventListener('click', () => {
+            //Tar inn Id´en som ble knyttet til knappens data-attributt da løkken kjøres.
             const productId = button.dataset.productId;
-            const productQuantity = document.querySelector(`.js-product-quantity-${productId}`).value;
+            //Tar inn Id verdien til selector knyttet til produktet du har valgt. Vet hvilken selector den skal velge på grunn av at hver selector har ulik productId.
+            const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
             const productIndex = cart.findIndex((product) => {
                 return product.productId === productId;
             });
@@ -65,8 +70,8 @@ document.querySelectorAll('.add-to-cart-button')
                 cart[productIndex].quantity++;
             } else{
                 cart.push({
-                    productId: productId,
-                    quantity: Number(productQuantity)
+                    productId,
+                    quantity
                 });
             }
             
@@ -76,6 +81,22 @@ document.querySelectorAll('.add-to-cart-button')
             });
             document.querySelector('.js-cart-quantity')
                 .innerHTML = cartQuantity;
+            
+            const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+            addedToCart.classList.add('added-to-cart-visible');
+            
+            //Variabel som blir verdien til propertien med samme key som productId
+            const previousTimeout = addedMessageTimeouts[productId];
+            //Hvis productId har en timeoutId vil den cleares.
+            if(previousTimeout){
+                clearTimeout(previousTimeout);
+            }
+            const timeOutId = setTimeout(() => {
+                addedToCart.classList.remove('added-to-cart-visible');
+            }, 2000);
+
+            //timeOutId knyttes til productId, f.eks: 'productId': 7, legges til i objekt 
+            addedMessageTimeouts[productId] = timeOutId;
         });
     });
 
