@@ -94,8 +94,8 @@ document.querySelectorAll('.js-delete-button')
     .forEach((deleteButton) => {
         deleteButton.addEventListener('click', () => {
             const productId = deleteButton.dataset.productId;
-            const productElement = document.querySelector(`.js-cart-time-container-${productId}`);
+            const productContainer = document.querySelector(`.js-cart-time-container-${productId}`);
             removeProduct(productId);
-            productElement.remove();
+            productContainer.remove();
         });
     });

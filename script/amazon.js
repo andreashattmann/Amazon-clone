@@ -65,6 +65,7 @@ function updateCartQuantity(){
     document.querySelector('.js-cart-quantity')
         .innerHTML = cartQuantity;
 }
+updateCartQuantity();
 
 //Objekt som samler timeOutId knyttet til produktet du trykket på sin productId.
 const addedMessageTimeouts = {};
