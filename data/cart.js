@@ -1,4 +1,7 @@
-export const cart = [];
+export const cart = [{
+    productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity: 2
+}];
 
 export function addToCart(productId){
     //Tar inn Id verdien til selector knyttet til produktet du har valgt. Vet hvilken selector den skal velge på grunn av at hver selector har ulik productId.
