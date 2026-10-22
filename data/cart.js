@@ -44,3 +44,13 @@ export function removeProduct(productId){
     cart = updatedCart;
     saveLocalStorage();
 }
+
+export function updateQuantity(productId, newQuantity){
+    if(Number.isInteger(newQuantity) && newQuantity >= 1 && newQuantity < 1000){
+        const product = cart.find((cartProduct) => {
+            return cartProduct.productId === productId;
+        });
+        product.quantity = newQuantity;
+        saveLocalStorage();
+    }
+}
