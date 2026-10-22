@@ -29,6 +29,14 @@ export function addToCart(productId){
     saveLocalStorage();
 }
 
+export function calculateCartQuantity(className){
+    let cartQuantity = 0;
+    cart.forEach((product) => {
+        cartQuantity += product.quantity;
+    });
+    return cartQuantity;
+}
+
 export function removeProduct(productId){
     const updatedCart = cart.filter((cartProduct) => {
         return cartProduct.productId !== productId;

@@ -1,4 +1,4 @@
-import { cart,removeProduct } from "../data/cart.js";
+import { cart,removeProduct, calculateCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "./utils/money.js";
 
@@ -89,6 +89,10 @@ cart.forEach((cartProduct) => {
 });
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
+function updateCartQuantity(){
+        document.querySelector('.js-checkout-quantity')
+            .innerHTML = calculateCartQuantity();
+}
 
 document.querySelectorAll('.js-delete-button')
     .forEach((deleteButton) => {
@@ -97,5 +101,8 @@ document.querySelectorAll('.js-delete-button')
             const productContainer = document.querySelector(`.js-cart-time-container-${productId}`);
             removeProduct(productId);
             productContainer.remove();
+            updateCartQuantity('.js-checkout-quantity');
         });
-    });
+});
+
+updateCartQuantity('.js-checkout-quantity');
