@@ -29,7 +29,7 @@ export function addToCart(productId){
     saveLocalStorage();
 }
 
-export function calculateCartQuantity(className){
+export function calculateCartQuantity(){
     let cartQuantity = 0;
     cart.forEach((product) => {
         cartQuantity += product.quantity;
@@ -46,11 +46,9 @@ export function removeProduct(productId){
 }
 
 export function updateQuantity(productId, newQuantity){
-    if(Number.isInteger(newQuantity) && newQuantity >= 1 && newQuantity < 1000){
-        const product = cart.find((cartProduct) => {
-            return cartProduct.productId === productId;
-        });
-        product.quantity = newQuantity;
-        saveLocalStorage();
-    }
+    const product = cart.find((cartProduct) => {
+        return cartProduct.productId === productId;
+    });
+    product.quantity = newQuantity;
+    saveLocalStorage();
 }
