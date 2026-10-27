@@ -12,7 +12,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-name limit-text-to-2-lines">
-        ${product.name}
+            ${product.name}
         </div>
 
         <div class="product-rating-container">
@@ -24,7 +24,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-price">
-        $${formatPrice(product.priceCents)}
+            ${formatPrice(product.priceCents)}
         </div>
 
         <div class="product-quantity-container">
