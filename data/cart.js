@@ -55,3 +55,11 @@ export function updateQuantity(productId, newQuantity){
     product.quantity = newQuantity;
     saveLocalStorage();
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId){
+    const product = cart.find((cartProduct) => {
+        return cartProduct.productId === productId;
+    })
+    product.deliveryOptionId = deliveryOptionId;
+    saveLocalStorage();
+}
