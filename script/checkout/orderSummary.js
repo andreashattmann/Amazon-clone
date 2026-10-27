@@ -1,4 +1,4 @@
-import { cart,removeProduct, calculateCartQuantity, updateQuantity, updateDeliveryOption } from "../../data/cart.js";
+import { cart, removeProduct, calculateCartQuantity, updateQuantity, updateDeliveryOption } from "../../data/cart.js";
 import { products } from "../../data/products.js";
 import { formatPrice } from "../utils/money.js";
 //Default export
@@ -38,7 +38,7 @@ export function renderOrderSummary(){
                         ${matchingProduct.name}
                     </div>
                     <div class="product-price">
-                        ${formatPrice(matchingProduct.priceCents)}
+                        $${formatPrice(matchingProduct.priceCents)}
                     </div>
                     <div class="product-quantity">
                         <span>
@@ -76,7 +76,7 @@ export function renderOrderSummary(){
             const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
             const dateFormat = deliveryDate.format('dddd, MMMM D');
 
-            const price = deliveryOption.priceCents === 0 ? 'Free' : formatPrice(deliveryOption.priceCents);
+            const price = deliveryOption.priceCents === 0 ? 'Free' : `$${formatPrice(deliveryOption.priceCents)}`;
 
             const isChecked = deliveryOption.id === cartProduct.deliveryOptionId;
 
@@ -142,6 +142,8 @@ export function renderOrderSummary(){
                 .innerHTML = newQuantity;
             document.querySelector('.js-checkout-quantity')
                 .innerHTML = calculateCartQuantity();
+            document.querySelector('.js-payment-quantity')
+                .innerHTML = `Items ($${calculateCartQuantity})`;
         }
     }
 
