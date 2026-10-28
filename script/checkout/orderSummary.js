@@ -5,6 +5,7 @@ import { formatPrice } from "../utils/money.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions } from "../../data/delivery.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary(){
     let cartSummaryHTML = '';
@@ -120,6 +121,7 @@ export function renderOrderSummary(){
                 const productId = deleteLink.dataset.productId;
                 removeProduct(productId);
 
+                renderCheckoutHeader();
                 renderOrderSummary();
                 renderPaymentSummary();
             });
@@ -156,6 +158,7 @@ export function renderOrderSummary(){
                 const productId = saveLink.dataset.productId;
 
                 updateProductQuantity(productId);
+                renderCheckoutHeader();
                 renderPaymentSummary();
             });
         });
@@ -166,6 +169,7 @@ export function renderOrderSummary(){
                 const productId = input.dataset.productId;
                 if(event.key === 'Enter'){
                     updateProductQuantity(productId)
+                    renderCheckoutHeader();
                     renderPaymentSummary();
                 }
             })
