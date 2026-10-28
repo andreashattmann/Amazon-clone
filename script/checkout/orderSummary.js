@@ -124,11 +124,11 @@ export function renderOrderSummary(){
         .forEach((deleteLink) => {
             deleteLink.addEventListener('click', () => {
                 const productId = deleteLink.dataset.productId;
-                const productContainer = document.querySelector(`.js-cart-item-container-${productId}`);
                 removeProduct(productId);
-                productContainer.remove();
+
                 updateCartQuantity('.js-checkout-quantity');
 
+                renderOrderSummary();
                 renderPaymentSummary();
             });
     });
