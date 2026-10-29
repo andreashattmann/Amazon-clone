@@ -88,7 +88,8 @@ document.querySelectorAll('.js-add-to-cart')
         button.addEventListener('click', () => {
             //Tar inn Id´en som ble knyttet til knappens data-attributt da løkken kjøres.
             const productId = button.dataset.productId;
-            addToCart(productId);
+            const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
+            addToCart(productId, quantity);
             updateCartQuantity();
             displayAdded(productId);
         });

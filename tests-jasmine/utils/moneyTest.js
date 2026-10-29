@@ -1,6 +1,6 @@
-import { formatPrice } from "../script/utils/money.js";
+import { formatPrice } from "../../script/utils/money.js";
 
-describe('test suite: formatprice', () => {
+describe('test suite: formatPrice', () => {
     it('converts cents into dollar',  () => {
         expect(formatPrice(2095)).toEqual('20.95');
     });
