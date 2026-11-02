@@ -1,4 +1,4 @@
-//Object Oriented Programming (OOP)
+//Object Oriented Programming (OOP) - Object
 function Cart(localStorageKey){
     const cart = {
         cartProdcts: undefined, 
