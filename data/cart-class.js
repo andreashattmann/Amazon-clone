@@ -1,15 +1,15 @@
 //Object Oriented Programming (OOP) - Class
 class Cart{
     cartProdcts;
-    localStorageKey;
+    #localStorageKey;
 
     constructor(localStorageKey) {
-        this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
     }
 
-    loadFromStorage(){
-        this.cartProdcts = JSON.parse(localStorage.getItem(this.localStorageKey)) || [{
+    #loadFromStorage(){
+        this.cartProdcts = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [{
             productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
             quantity: 2,
             deliveryOptionId: '1'
@@ -22,7 +22,7 @@ class Cart{
     }
 
     saveLocalStorage(){
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartProdcts));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartProdcts));
     }
 
     addToCart(productId, quantity){
