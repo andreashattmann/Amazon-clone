@@ -6,17 +6,21 @@ import { loadCart } from "../data/cart.js";
 
 
 async function loadPage(){
-    await loadProductsFetch()
-
-    await new Promise((resolve) => {
-        loadCart(() => {
-            resolve();
+    try{
+        await loadProductsFetch()
+        
+        await new Promise((resolve) => {
+            loadCart(() => {
+                resolve();
+            });
         });
-    });
-
-    renderCheckoutHeader();
-    renderOrderSummary();
-    renderPaymentSummary();
+    } catch (error){
+        console.error('Unexpected error', error);
+    } finally{
+        renderCheckoutHeader();
+        renderOrderSummary();
+        renderPaymentSummary();
+    }
 }
 loadPage();
 
