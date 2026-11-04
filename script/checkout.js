@@ -16,11 +16,11 @@ async function loadPage(){
         });
     } catch (error){
         console.error('Unexpected error', error);
-    } finally{
-        renderCheckoutHeader();
-        renderOrderSummary();
-        renderPaymentSummary();
     }
+    
+    renderCheckoutHeader();
+    renderOrderSummary();
+    renderPaymentSummary();
 }
 loadPage();
 
