@@ -1,99 +1,105 @@
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products } from '../data/products.js'
+import { products, loadProducts } from '../data/products.js'
 import { formatPrice } from "./utils/money.js";
 
-let productsHTML = '';
-products.forEach((product) => {
-    productsHTML += `
-    <div class="product-container">
-        <div class="product-image-container">
-        <img class="product-image"
-            src="${product.image}">
-        </div>
+loadProducts(renderProductsGrid);
 
-        <div class="product-name limit-text-to-2-lines">
-            ${product.name}
-        </div>
+function renderProductsGrid(){
+    let productsHTML = '';
+    products.forEach((product) => {
+        productsHTML += `
+        <div class="product-container">
+            <div class="product-image-container">
+            <img class="product-image"
+                src="${product.image}">
+            </div>
 
-        <div class="product-rating-container">
-        <img class="product-rating-stars"
-            src="${product.getStarsUrl()}">
-        <div class="product-rating-count link-primary">
-            ${product.rating.count}
-        </div>
-        </div>
+            <div class="product-name limit-text-to-2-lines">
+                ${product.name}
+            </div>
 
-        <div class="product-price">
-            ${product.getPrice()}
-        </div>
+            <div class="product-rating-container">
+            <img class="product-rating-stars"
+                src="${product.getStarsUrl()}">
+            <div class="product-rating-count link-primary">
+                ${product.rating.count}
+            </div>
+            </div>
 
-        <div class="product-quantity-container">
-        <!--ProductId for produktet settes inn i klassenavnet for å gjennkjenne hvilken selector du velger.-->
-        <select class="js-product-quantity-${product.id}">
-            <option selected value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
-        </div>
+            <div class="product-price">
+                ${product.getPrice()}
+            </div>
 
-        ${product.showSizeChartHTML()}
+            <div class="product-quantity-container">
+            <!--ProductId for produktet settes inn i klassenavnet for å gjennkjenne hvilken selector du velger.-->
+            <select class="js-product-quantity-${product.id}">
+                <option selected value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            </div>
 
-        <div class="product-spacer"></div>
+            ${product.showSizeChartHTML()}
 
-        <div class="added-to-cart js-added-to-cart-${product.id}">
-        <img src="images/icons/checkmark.png">
-        Added
-        </div>
+            <div class="product-spacer"></div>
 
-        <button class="add-to-cart-button js-add-to-cart button-primary" data-product-id="${product.id}">
-        Add to Cart
-        </button>
-    </div>`;
-});
-document.querySelector('.js-products-grid').innerHTML = productsHTML;
+            <div class="added-to-cart js-added-to-cart-${product.id}">
+            <img src="images/icons/checkmark.png">
+            Added
+            </div>
 
-function updateCartQuantity(){
-    document.querySelector('.js-cart-quantity')
-        .innerHTML = calculateCartQuantity();
-}
-updateCartQuantity();
-
-//Objekt som samler timeOutId knyttet til produktet du trykket på sin productId.
-const addedMessageTimeouts = {};
-function displayAdded(productId){
-    const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
-    addedToCart.classList.add('added-to-cart-visible');
-    
-    //Variabel som blir verdien til propertien med samme key som productId
-    const previousTimeout = addedMessageTimeouts[productId];
-    //Hvis productId har en timeoutId vil den cleares.
-    if(previousTimeout){
-        clearTimeout(previousTimeout);
-    }
-    const timeOutId = setTimeout(() => {
-        addedToCart.classList.remove('added-to-cart-visible');
-    }, 2000);
-
-    //timeOutId knyttes til productId, f.eks: 'productId': 7, legges til i objekt 
-    addedMessageTimeouts[productId] = timeOutId;
-}
-
-document.querySelectorAll('.js-add-to-cart')
-    .forEach((button) => {
-        button.addEventListener('click', () => {
-            //Tar inn Id´en som ble knyttet til knappens data-attributt da løkken kjøres.
-            const productId = button.dataset.productId;
-            const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
-            addToCart(productId, quantity);
-            updateCartQuantity();
-            displayAdded(productId);
-        });
+            <button class="add-to-cart-button js-add-to-cart button-primary" data-product-id="${product.id}">
+            Add to Cart
+            </button>
+        </div>`;
     });
+    document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+    function updateCartQuantity(){
+        document.querySelector('.js-cart-quantity')
+            .innerHTML = calculateCartQuantity();
+    }
+    updateCartQuantity();
+
+    //Objekt som samler timeOutId knyttet til produktet du trykket på sin productId.
+    const addedMessageTimeouts = {};
+    function displayAdded(productId){
+        const addedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+        addedToCart.classList.add('added-to-cart-visible');
+        
+        //Variabel som blir verdien til propertien med samme key som productId
+        const previousTimeout = addedMessageTimeouts[productId];
+        //Hvis productId har en timeoutId vil den cleares.
+        if(previousTimeout){
+            clearTimeout(previousTimeout);
+        }
+        const timeOutId = setTimeout(() => {
+            addedToCart.classList.remove('added-to-cart-visible');
+        }, 2000);
+
+        //timeOutId knyttes til productId, f.eks: 'productId': 7, legges til i objekt 
+        addedMessageTimeouts[productId] = timeOutId;
+    }
+
+    document.querySelectorAll('.js-add-to-cart')
+        .forEach((button) => {
+            button.addEventListener('click', () => {
+                //Tar inn Id´en som ble knyttet til knappens data-attributt da løkken kjøres.
+                const productId = button.dataset.productId;
+                const quantity = Number(document.querySelector(`.js-product-quantity-${productId}`).value);
+                addToCart(productId, quantity);
+                updateCartQuantity();
+                displayAdded(productId);
+            });
+        });
+}
+
+
 
