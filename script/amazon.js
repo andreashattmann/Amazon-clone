@@ -1,8 +1,20 @@
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products, loadProducts } from '../data/products.js'
+import { products, loadProductsFetch } from '../data/products.js'
 import { formatPrice } from "./utils/money.js";
 
-loadProducts(renderProductsGrid);
+async function loadPage(){
+    try{
+        await Promise.all([
+            loadProductsFetch()
+        ]);
+
+    } catch (error){
+        console.error('Unexpected error', error);
+    }
+
+    renderProductsGrid();
+}
+loadPage();
 
 function renderProductsGrid(){
     let productsHTML = '';

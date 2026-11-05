@@ -8,3 +8,4 @@ export function addOrder(order){
 function saveToLocalStorage(){
     localStorage.setItem('orders', JSON.stringify(orders));
 }
+
