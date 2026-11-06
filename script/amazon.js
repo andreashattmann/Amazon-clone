@@ -24,9 +24,15 @@ function renderProductsGrid(){
     let filteredProducts = products;
 
     if(search){
+        const searchLowerCase = search.toLowerCase();
+
         filteredProducts = products.filter((product) => {
-            return product.name.toLowerCase().includes(search.toLowerCase());
+            return product.name.toLowerCase().includes(searchLowerCase) || product.keywords.includes(searchLowerCase);
         });
+
+        products.forEach((product) => {
+            product.keywords
+        })
     }
 
     filteredProducts.forEach((product) => {
