@@ -29,7 +29,7 @@ export function renderOrder(){
             </div>`
 
         order.products.forEach((orderProduct) => {
-            const estimatedDeliveryString = dayjs(order.estimatedDeliveryTime);
+            const estimatedDeliveryString = dayjs(orderProduct.estimatedDeliveryTime);
             const estimatedDeliveryTime = estimatedDeliveryString.format('MMMM D');
 
             const matchingProduct = products.find((product) => {
@@ -39,18 +39,18 @@ export function renderOrder(){
             html += `
                 <div class="order-details-grid js-order-details-grid">
                     <div class="product-image-container">
-                        <img src="images/products/athletic-cotton-socks-6-pairs.jpg">
+                        <img src="${matchingProduct.image}">
                     </div>
 
                     <div class="product-details">
                         <div class="product-name">
-                            Black and Gray Athletic Cotton Socks - 6 Pairs
+                            ${matchingProduct.name}
                         </div>
                         <div class="product-delivery-date">
-                            Arriving on: August 15
+                            Arriving on: ${estimatedDeliveryTime}
                         </div>
                         <div class="product-quantity">
-                            Quantity: 1
+                            Quantity: ${orderProduct.quantity}
                         </div>
                         <button class="buy-again-button button-primary">
                             <img class="buy-again-icon" src="images/icons/buy-again.png">
@@ -76,13 +76,13 @@ function renderOrderHeader(){
     let html = '';
     orders.forEach((order) => {
         const orderTimeString = dayjs(order.orderTime);
-        const orderDate = orderTimeString.format('MMMM D')
+        const orderTime = orderTimeString.format('MMMM D')
 
         html = `
                 <div class="order-header-left-section">
                     <div class="order-date">
                         <div class="order-header-label">Order Placed:</div>
-                        <div>${orderDate}</div>
+                        <div>${orderTime}</div>
                     </div>
                     <div class="order-total">
                         <div class="order-header-label">Total:</div>
