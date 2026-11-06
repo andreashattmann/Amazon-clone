@@ -32,6 +32,7 @@ function renderTracking(){
         return productId === orderProduct.productId;
     })
 
+    const orderTime = dayjs(matchingOrder.orderTime);
     const deliveryDateDayjs = dayjs(matchingOrderProduct.estimatedDeliveryTime);
     const estimatedDelivery = deliveryDateDayjs.format('dddd, MMMM D')
 
@@ -56,15 +57,15 @@ function renderTracking(){
             <img class="product-image" src="${matchingProduct.image}">
 
             <div class="progress-labels-container">
-            <div class="progress-label">
-                Preparing
-            </div>
-            <div class="progress-label current-status">
-                Shipped
-            </div>
-            <div class="progress-label">
-                Delivered
-            </div>
+                <div class="progress-label js-progress-label-1">
+                    Preparing
+                </div>
+                <div class="progress-label js-progress-label-2">
+                    Shipped
+                </div>
+                <div class="progress-label js-progress-label-3">
+                    Delivered
+                </div>
             </div>
 
             <div class="progress-bar-container">
@@ -74,4 +75,25 @@ function renderTracking(){
 
     document.querySelector('.main')
         .innerHTML = html;
+
+    function deliveryProgress(){
+        const percentProgress = ((dayjs() - orderTime) / (deliveryDateDayjs - orderTime)) * 100;
+        
+        document.querySelector('.progress-bar')
+            .style.width = `${percentProgress}%`;
+
+        let label = '';
+        if(percentProgress < 50){
+            label = '1';
+        } else if(percentProgress >= 50 && percentProgress <= 99){
+            label = '2';
+        } else{
+            label = '3';
+        }
+
+        document.querySelector(`.js-progress-label-${label}`)
+                .classList.add('current-status')
+    }
+    deliveryProgress()
 }
+
