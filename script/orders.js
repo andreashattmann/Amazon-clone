@@ -55,8 +55,8 @@ function renderOrder(){
                         </div>
 
                         <div class="product-actions">
-                            <a href="tracking.html">
-                                <button class="track-package-button button-secondary">
+                            <a href="tracking.html?orderId=${order.id}&productId=${matchingProduct.id}">
+                                <button class="track-package-button button-secondary js-track-package-button">
                                 Track package
                                 </button>
                             </a>
@@ -100,9 +100,9 @@ function renderOrder(){
     }
 
     document.querySelectorAll('.js-buy-again-button')
-        .forEach((button) => {
-            button.addEventListener('click', () => {
-                const productId = button.dataset.productId;
+        .forEach((buyAgainButton) => {
+            buyAgainButton.addEventListener('click', () => {
+                const productId = buyAgainButton.dataset.productId;
                 addToCart(productId, 1);
             })
         })
